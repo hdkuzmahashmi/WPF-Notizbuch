@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>WPF_Layoutcontainer_Notizbuch</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\Notizbuch.ico" />
+    <None Remove="Images\Notizbuch.png" />
+    <None Remove="Notizbuch.ico" />
+    <None Remove="Notizbuch.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Notizbuch.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Notizbuch.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Notizbuch.ico" />
+    <Resource Include="Notizbuch.png" />
+  </ItemGroup>
+
+</Project>
