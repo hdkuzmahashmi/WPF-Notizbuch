@@ -18,6 +18,7 @@ namespace WPF_Layoutcontainer_Notizbuch
     public partial class MainWindow : Window
     {
         public Notiz AktuelleNotiz { get; set; }
+        private Notiz selectedNotiz;
         public MainWindow()
         {
             InitializeComponent();
@@ -40,35 +41,63 @@ namespace WPF_Layoutcontainer_Notizbuch
             listeAktualisieren();
 
         }
+        //Old Code
+        //public void listeAktualisieren()
+        //{
+        //    var vorherigeAuswahl = AktuelleNotiz;
+        //    lbxNotizen.Items.Clear();
+        //    // Get selected item of kategorie combobox
+        //    var selectedKategorie = (Kategorie)cbxKategorie.SelectedItem;
 
-        public void listeAktualisieren()
+        //    foreach (var notiz in Notiz.Notizen.Values)
+        //    {
+        //        if (selectedKategorie == Kategorie.Alle || notiz.Kategorie == selectedKategorie)
+        //        {
+        //            lbxNotizen.Items.Add(notiz);
+        //        }
+        //    }
+
+        //    // Try to restore the original selection
+        //    if (vorherigeAuswahl != null && lbxNotizen.Items.Contains(vorherigeAuswahl))
+        //    {
+        //        lbxNotizen.SelectedItem = vorherigeAuswahl;
+        //    }
+        //    else
+        //    {
+        //        AktuelleNotiz = null;
+        //        tbxNotiz.IsEnabled = false;
+        //        btnLöschen.IsEnabled = false;
+        //    }
+        //}
+
+        void listeAktualisieren(string suchtext = "")
         {
-            var vorherigeAuswahl = AktuelleNotiz;
-            lbxNotizen.Items.Clear();
-            // Get selected item of kategorie combobox
-            var selectedKategorie = (Kategorie)cbxKategorie.SelectedItem;
+            var gewählteKat = (Kategorie)this.cbxKategorie.SelectedItem;
+            var query = Notiz.Notizen.Values.Where(notiz => notiz.Inhalt.ToLower().Contains(suchtext.ToLower()) && (gewählteKat == Kategorie.Alle || notiz.Kategorie == gewählteKat));
 
-            foreach (var notiz in Notiz.Notizen.Values)
-            {
-                if (selectedKategorie == Kategorie.Alle || notiz.Kategorie == selectedKategorie)
-                {
-                    lbxNotizen.Items.Add(notiz);
-                }
-            }
+            //var gewählteKat = (Kategorie)this.cbxKategorie.SelectedItem; 
+            //var query = Notiz.Notizen.Values.Where(notiz => notiz.Inhalt.Contains(suchtext) && (gewählteKat == Kategorie.Alle || notiz.Kategorie == gewählteKat)).OrderBy(notiz => notiz.Kategorie).ThenBy(notiz => notiz.Inhalt.Split('\r', '\n')[0]);
 
-            // Try to restore the original selection
-            if (vorherigeAuswahl != null && lbxNotizen.Items.Contains(vorherigeAuswahl))
-            {
-                lbxNotizen.SelectedItem = vorherigeAuswahl;
-            }
-            else
-            {
-                AktuelleNotiz = null;
-                tbxNotiz.IsEnabled = false;
-                btnLöschen.IsEnabled = false;
-            }
+            lbxNotizen.ItemsSource = query;
+            // komplette Collection als Items der ListBox             
+            // ohne lbxNotizen.Items.Clear() bleibt AktuelleNotiz unverändert und kann für erneute Auswahl verwendet werden.
+            lbxNotizen.SelectedItem = AktuelleNotiz;
+
+
+           
+
+            //DataContext = query;
         }
 
+
+        private void OnSearchClick(object sender, RoutedEventArgs e)
+        {
+            listeAktualisieren((sender as Button).Name == "btnSuche" ? this.txtSuch.Text : "");
+            if (sender == btnSucheAufheben)
+                this.txtSuch.Text = "";
+        }
+
+      
         private void cbxKategorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             listeAktualisieren();

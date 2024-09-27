@@ -46,6 +46,17 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
+        <!-- Define a DataTemplate for the ListBox -->
+        <DataTemplate x:Key="NoteTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding ErstelltAm, Converter={StaticResource DateConverter}}" 
+                           Foreground="{Binding Converter={StaticResource DateColorConverter}}" 
+                           Margin="0,0,10,0"/>
+                <TextBlock Text="{Binding Kategorie}" Width="60" Margin="5"/>
+                <TextBlock Text="{Binding Inhalt}" />
+            </StackPanel>
+        </DataTemplate>
+
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -91,13 +102,13 @@
             <TextBox x:Name="tbxNotiz" FontFamily="Comic Sans MS" Background="{StaticResource rscFarbe}" IsEnabled="False" VerticalScrollBarVisibility="Visible" Height="278" TextWrapping="Wrap" TextChanged="tbxNotiz_TextChanged"></TextBox>
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="1">
-            <ListBox x:Name="lbxNotizen" Height="278" DisplayMemberPath="Inhalt" SelectionChanged="lbxNotizen_SelectionChanged"></ListBox>
+            <ListBox x:Name="lbxNotizen" Height="278"  DisplayMemberPath="Inhalt" SelectionChanged="lbxNotizen_SelectionChanged"></ListBox>
         </StackPanel>
         <DockPanel Grid.ColumnSpan="2" Margin="0,41,0,0" Grid.RowSpan="2">
             <Label>Suchtext</Label>
             <TextBox x:Name="txtSuch" Width="100"></TextBox>
-            <Button Width="50">Suchen</Button>
-            <Button Width="20" Background="Red" Foreground="White">X</Button>
+            <Button Width="50"  x:Name="btnSuche"  Click="OnSearchClick">Suchen</Button>
+            <Button Width="20" x:Name="btnSucheAufheben" Click="OnSearchClick" Background="Red" Foreground="White">X</Button>
         </DockPanel>
         <DockPanel Grid.Row="3" Grid.ColumnSpan="3">
             <Button x:Name="btnNeu" Click="btnNeu_Click" Style="{StaticResource styButtonDisabled}" Content="Neu" Width="50" IsEnabled="False"></Button>
